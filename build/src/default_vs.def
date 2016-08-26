@@ -1,0 +1,3 @@
+LIBRARY cross_build_library_api
+EXPORTS
+	fndefault_vs

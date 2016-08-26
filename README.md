@@ -1,8 +1,116 @@
-# cross_build_library
+#cross_build_library
 
 This project is about discovering, understanding and sharing knowledge about cross platform library builds.
 
-## default_vs project
+##CMake generated DLL project
+
+    * The DOS Shell cript vs_me.cmd calls Cmake to generate a Visual Stuio solution build/build_vs/cross_build_library.sln
+
+```
+C:\Users\kjell-olovhogdahl\Documents\GitHub\cross_build_library\build>vs_me.cmd
+
+C:\Users\kjell-olovhogdahl\Documents\GitHub\cross_build_library\build>REM Use Cmake to generate Visual Studio (VS) build environment
+
+C:\Users\kjell-olovhogdahl\Documents\GitHub\cross_build_library\build>SET BUILD_DIR=build_vs
+
+C:\Users\kjell-olovhogdahl\Documents\GitHub\cross_build_library\build>if exist build_vs (rmdir /s/q build_vs )
+
+C:\Users\kjell-olovhogdahl\Documents\GitHub\cross_build_library\build>mkdir build_vs
+
+C:\Users\kjell-olovhogdahl\Documents\GitHub\cross_build_library\build>cd build_vs
+
+C:\Users\kjell-olovhogdahl\Documents\GitHub\cross_build_library\build\build_vs>REM use Cmake to generate default build environment (on windows it is Visual Studio)
+
+C:\Users\kjell-olovhogdahl\Documents\GitHub\cross_build_library\build\build_vs>cmake ..
+-- Building for: Visual Studio 14 2015
+-- The C compiler identification is MSVC 19.0.24210.0
+-- The CXX compiler identification is MSVC 19.0.24210.0
+-- Check for working C compiler using: Visual Studio 14 2015
+-- Check for working C compiler using: Visual Studio 14 2015 -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working CXX compiler using: Visual Studio 14 2015
+-- Check for working CXX compiler using: Visual Studio 14 2015 -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Performing Test COMPILER_HAS_DEPRECATED_ATTR
+-- Performing Test COMPILER_HAS_DEPRECATED_ATTR - Failed
+-- Performing Test COMPILER_HAS_DEPRECATED
+-- Performing Test COMPILER_HAS_DEPRECATED - Success
+-- Configuring done
+-- Generating done
+-- Build files have been written to: C:/Users/kjell-olovhogdahl/Documents/GitHub/cross_build_library/build/build_vs
+
+C:\Users\kjell-olovhogdahl\Documents\GitHub\cross_build_library\build\build_vs>cd ..
+
+C:\Users\kjell-olovhogdahl\Documents\GitHub\cross_build_library\build>
+```
+* This Project builds an cross_build_library_api.dll
+
+```
+1>------ Rebuild All started: Project: ZERO_CHECK, Configuration: Debug Win32 ------
+1>  Checking Build System
+1>  CMake does not need to re-run because C:/Users/kjell-olovhogdahl/Documents/GitHub/cross_build_library/build/build_vs/CMakeFiles/generate.stamp is up-to-date.
+2>------ Rebuild All started: Project: cross_build_library_api, Configuration: Debug Win32 ------
+2>  Building Custom Rule C:/Users/kjell-olovhogdahl/Documents/GitHub/cross_build_library/build/CMakeLists.txt
+2>  CMake does not need to re-run because C:\Users\kjell-olovhogdahl\Documents\GitHub\cross_build_library\build\build_vs\CMakeFiles\generate.stamp is up-to-date.
+2>  default_vs.cpp
+2>  dllmain.cpp
+2>  stdafx.cpp
+2>  Generating Code...
+2>     Creating library C:/Users/kjell-olovhogdahl/Documents/GitHub/cross_build_library/build/build_vs/Debug/cross_build_library_api.lib and object C:/Users/kjell-olovhogdahl/Documents/GitHub/cross_build_library/build/build_vs/Debug/cross_build_library_api.exp
+2>  cross_build_library_api.vcxproj -> C:\Users\kjell-olovhogdahl\Documents\GitHub\cross_build_library\build\build_vs\Debug\cross_build_library_api.dll
+========== Rebuild All: 2 succeeded, 0 failed, 0 skipped ==========
+
+```
+
+* And the generated dll exposes the __declspec(dllexport) symbols and the unmangled symbol names (e.g., "fndefault_vs") in the de-file.
+
+```
+C:\Users\kjell-olovhogdahl\Documents\GitHub\cross_build_library\build\build_vs\Debug>dumpbin /EXPORTS cross_build_library_api.dll
+Microsoft (R) COFF/PE Dumper Version 14.00.24210.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+
+Dump of file cross_build_library_api.dll
+
+File Type: DLL
+
+  Section contains the following exports for default_vs.dll
+
+    00000000 characteristics
+    57C01863 time date stamp Fri Aug 26 12:22:27 2016
+        0.00 version
+           1 ordinal base
+           5 number of functions
+           5 number of names
+
+    ordinal hint RVA      name
+
+          1    0 00001109 ??0Cdefault_vs@@QAE@XZ = @ILT+260(??0Cdefault_vs@@QAE@XZ)
+          2    1 000010E1 ??4Cdefault_vs@@QAEAAV0@$$QAV0@@Z = @ILT+220(??4Cdefault_vs@@QAEAAV0@$$QAV0@@Z)
+          3    2 00001023 ??4Cdefault_vs@@QAEAAV0@ABV0@@Z = @ILT+30(??4Cdefault_vs@@QAEAAV0@ABV0@@Z)
+          5    3 00009138 ?ndefault_vs@@3HA = ?ndefault_vs@@3HA (int ndefault_vs)
+          4    4 0000111D fndefault_vs = @ILT+280(?fndefault_vs@@YAHXZ)
+
+  Summary
+
+        1000 .00cfg
+        1000 .data
+        1000 .gfids
+        1000 .idata
+        3000 .rdata
+        1000 .reloc
+        1000 .rsrc
+        5000 .text
+
+C:\Users\kjell-olovhogdahl\Documents\GitHub\cross_build_library\build\build_vs\Debug>
+```
+
+
+##default_vs project
 
 This project stems from a default Visual Studio Win32 DLLproject. It is not cross-platform but servers as a base to experiment and understand how DLL:s are built in Visual Studio.
 
